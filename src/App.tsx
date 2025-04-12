@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { base64GLB } from './player.glb';
 import { Perf } from 'r3f-perf'
-import { Player } from './components/player/Player'
+import { Player } from './components/player/page'
+import { default as Scene1 } from './components/scene/scene1/page'
 
 const keyboardMap = [
   { name: "forward", keys: ["KeyW"] },
@@ -20,38 +21,18 @@ function App() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <KeyboardControls map={keyboardMap}>
-        <Canvas camera={{ position: [0, 5, 10], fov: 45 }}>
+        <Canvas camera={{ position: [5, 5, Math.PI * -4], fov: 45 }}>
+          {/* <OrbitControls /> */}
           <Perf />
           <ambientLight intensity={10} />
           <pointLight position={[10, 10, 10]} />
           <Physics debug timeStep={"vary"}>
-            {/* Ground */}
-            <RigidBody type="fixed" position={[0, -2, 0]}>
-              <mesh receiveShadow>
-                <boxGeometry args={[20, 1, 20]} />
-                <meshStandardMaterial color="#5b5b5b" />
-              </mesh>
-            </RigidBody>
-
-            {/* Falling boxes */}
-            <RigidBody position={[0, 5, 0]}>
-              <mesh castShadow>
-                <boxGeometry />
-                <meshStandardMaterial color="orange" />
-              </mesh>
-            </RigidBody>
-
-            <RigidBody position={[1, 7, 0]}>
-              <mesh castShadow>
-                <boxGeometry />
-                <meshStandardMaterial color="hotpink" />
-              </mesh>
-            </RigidBody>
+            {/* Scene 1 Content */}
+            <Scene1 />
 
             {/* Model with physics */}
             <Player />
           </Physics>
-          <OrbitControls />
         </Canvas>
       </KeyboardControls>
     </div>
