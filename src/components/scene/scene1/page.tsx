@@ -1,15 +1,33 @@
 import { RigidBody } from '@react-three/rapier'
+import { AirWalls } from '../../custom/AirWalls'
+import { AutoAirWalls } from '../../custom/AutoAirWalls'
+import { AirWallsWrapper } from '../../custom/AirWallsWrapper'
 
-export default function Scene1() {
+interface Scene1Props {
+  showAirWalls?: boolean;
+}
+
+export default function Scene1({ showAirWalls = false }: Scene1Props) {
   return (
     <>
-      <RigidBody colliders="cuboid" type="fixed" position={[0, -1, 0]}>
-        <mesh castShadow>
-          <boxGeometry args={[20, 1, 20]} />
-          <meshStandardMaterial color="#5b5b5b" />
-        </mesh>
-      </RigidBody>
       <gridHelper args={[10, 10]} />
+      <RigidBody colliders="cuboid" type="fixed">
+        <AutoAirWalls visible={showAirWalls} wallHeight={3}>
+          <mesh position={[0, -25, 0]}>
+            <boxGeometry args={[20, 50, 20]} />
+            <meshStandardMaterial color="#CBC6AF" />
+          </mesh>
+        </AutoAirWalls>
+      </RigidBody>
+      <RigidBody colliders="cuboid" type="fixed" position={[0, 0, 20]}>
+        <AutoAirWalls visible={showAirWalls} wallHeight={3}>
+          {/* This mesh has both geometry and material as siblings */}
+          <mesh position={[0, -25, 0]}>
+            <boxGeometry args={[20, 50, 20]} />
+            <meshStandardMaterial color="#CBC6AF" />
+          </mesh>
+        </AutoAirWalls>
+      </RigidBody>
     </>
   )
 }

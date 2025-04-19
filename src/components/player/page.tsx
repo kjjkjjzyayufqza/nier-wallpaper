@@ -317,6 +317,7 @@ export const Player = () => {
                 onCollisionEnter={({ manifold, target, other }) => {
                     onHit(target, other)
                 }}
+                position={[0, 10, 0]}
             >
                 <group ref={player} position={[0, 0, 0]} name='player_rigidbody_group'>
                     <primitive object={playerModel} scale={[20, 30, 20]} />
