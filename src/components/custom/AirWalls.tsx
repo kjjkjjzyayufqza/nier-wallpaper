@@ -2,6 +2,22 @@ import React from 'react';
 import { RigidBody } from '@react-three/rapier';
 import { Vector3 } from 'three';
 
+/** 
+ * Side configuration for air walls
+ * Each property represents one side of the box
+ * true = create wall, false = no wall
+ */
+export interface AirWallSides {
+  /** North side (positive Z) */
+  north?: boolean;
+  /** South side (negative Z) */
+  south?: boolean;
+  /** East side (positive X) */
+  east?: boolean;
+  /** West side (negative X) */
+  west?: boolean;
+}
+
 /**
  * Properties for the AirWalls component
  */
@@ -18,6 +34,8 @@ interface AirWallsProps {
   visible?: boolean;
   /** Optional color of the air walls when visible (default: "red") */
   wallColor?: string;
+  /** Optional configuration for which sides should have air walls (default: all sides) */
+  sides?: AirWallSides;
 }
 
 /**
@@ -30,7 +48,8 @@ export const AirWalls: React.FC<AirWallsProps> = ({
   wallHeight = 5,
   wallThickness = 0.2,
   visible = false,
-  wallColor = "red"
+  wallColor = "red",
+  sides = { north: true, south: true, east: true, west: true }
 }) => {
   const [x, y, z] = position;
   const [width, height, depth] = dimensions;
@@ -39,32 +58,35 @@ export const AirWalls: React.FC<AirWallsProps> = ({
   const topY = y + height / 2;
   
   // Calculate positions for the four walls
-  const walls = [
+  const wallConfigs = [
     // North wall (z+)
-    {
+    sides.north !== false && {
       position: new Vector3(x, topY + wallHeight / 2, z + depth / 2),
       args: [width + wallThickness, wallHeight, wallThickness] as [number, number, number]
     },
     // South wall (z-)
-    {
+    sides.south !== false && {
       position: new Vector3(x, topY + wallHeight / 2, z - depth / 2),
       args: [width + wallThickness, wallHeight, wallThickness] as [number, number, number]
     },
     // East wall (x+)
-    {
+    sides.east !== false && {
       position: new Vector3(x + width / 2, topY + wallHeight / 2, z),
       args: [wallThickness, wallHeight, depth + wallThickness] as [number, number, number]
     },
     // West wall (x-)
-    {
+    sides.west !== false && {
       position: new Vector3(x - width / 2, topY + wallHeight / 2, z),
       args: [wallThickness, wallHeight, depth + wallThickness] as [number, number, number]
     }
   ];
+  
+  // Filter out false values (sides that shouldn't have walls)
+  const walls = wallConfigs.filter(Boolean);
 
   return (
     <>
-      {walls.map((wall, index) => (
+      {walls.map((wall: any, index) => (
         <RigidBody 
           key={`air-wall-${index}`} 
           type="fixed" 

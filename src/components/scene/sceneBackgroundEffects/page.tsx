@@ -1,25 +1,24 @@
-import { RigidBody } from '@react-three/rapier'
 import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 export default function SceneBackgroundEffects() {
   const CONFIG = {
-    count: 20,
+    count: 50,
     size: 1,
     color: "#EAE5D1",
     speed: 0.005,
     x: {
-      min: -100,
-      max: 100,
+      min: -200,
+      max: 200,
     },
     y: {
       min: -50,
-      max: -100,
+      max: -200,
     },
     z: {
-      min: -100,
-      max: 100,
+      min: -200,
+      max: 200,
     },
   }
   const meshRef = useRef<THREE.InstancedMesh>(null)

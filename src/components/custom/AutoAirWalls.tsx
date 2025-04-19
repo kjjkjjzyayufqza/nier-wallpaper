@@ -1,5 +1,5 @@
 import React, { ReactElement, Children, cloneElement, useMemo, JSXElementConstructor } from 'react';
-import { AirWalls } from './AirWalls';
+import { AirWalls, AirWallSides } from './AirWalls';
 import { Vector3, Box3 } from 'three';
 import { useThree } from '@react-three/fiber';
 
@@ -23,6 +23,8 @@ interface AutoAirWallsProps {
   visible?: boolean;
   /** Optional color of the air walls when visible (default: "red") */
   wallColor?: string;
+  /** Optional configuration for which sides should have air walls (default: all sides) */
+  sides?: AirWallSides;
 }
 
 /**
@@ -35,7 +37,8 @@ export const AutoAirWalls: React.FC<AutoAirWallsProps> = ({
   wallHeight = 5,
   wallThickness = 0.2,
   visible = false,
-  wallColor = "red"
+  wallColor = "red",
+  sides
 }) => {
   // Clone the children to render them unchanged
   const clonedChildren = useMemo(() => {
@@ -84,6 +87,7 @@ export const AutoAirWalls: React.FC<AutoAirWallsProps> = ({
           wallThickness={wallThickness}
           visible={visible}
           wallColor={wallColor}
+          sides={sides}
         />
       );
     });

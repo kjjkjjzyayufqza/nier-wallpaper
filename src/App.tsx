@@ -40,7 +40,7 @@ function App() {
     <div style={{ width: '100%', height: '100vh' }}>
       <KeyboardControls map={keyboardMap}>
         <Canvas
-          camera={{ position: [15, 15, Math.PI * -4], fov: 45 }}
+          camera={{ position: [15, 15, Math.PI * -4], fov: 45, near: 0.1, far: 10000 }}
           gl={{
             toneMapping: NoToneMapping,
             powerPreference: "high-performance",

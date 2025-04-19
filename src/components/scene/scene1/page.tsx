@@ -8,11 +8,12 @@ interface Scene1Props {
 }
 
 export default function Scene1({ showAirWalls = false }: Scene1Props) {
+
   return (
     <>
       <gridHelper args={[10, 10]} />
       <RigidBody colliders="cuboid" type="fixed">
-        <AutoAirWalls visible={showAirWalls} wallHeight={3}>
+        <AutoAirWalls visible={showAirWalls} wallHeight={3} sides={{ north: false }}>
           <mesh position={[0, -25, 0]}>
             <boxGeometry args={[20, 50, 20]} />
             <meshStandardMaterial color="#CBC6AF" />
@@ -20,8 +21,7 @@ export default function Scene1({ showAirWalls = false }: Scene1Props) {
         </AutoAirWalls>
       </RigidBody>
       <RigidBody colliders="cuboid" type="fixed" position={[0, 0, 20]}>
-        <AutoAirWalls visible={showAirWalls} wallHeight={3}>
-          {/* This mesh has both geometry and material as siblings */}
+        <AutoAirWalls visible={showAirWalls} wallHeight={3} sides={{ south: false }}>
           <mesh position={[0, -25, 0]}>
             <boxGeometry args={[20, 50, 20]} />
             <meshStandardMaterial color="#CBC6AF" />

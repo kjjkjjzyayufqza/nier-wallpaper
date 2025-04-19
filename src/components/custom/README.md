@@ -31,6 +31,11 @@ The basic component that creates air walls around a mesh based on explicitly pro
 - `wallThickness`: (optional) Thickness of the air walls (default: 0.2)
 - `visible`: (optional) Whether to make the walls visible for debugging (default: false)
 - `wallColor`: (optional) Color of the walls when visible (default: "red")
+- `sides`: (optional) Configure which sides should have air walls (default: all sides)
+  - `north`: (optional) Whether to create a wall on the north side (positive Z) (default: true)
+  - `south`: (optional) Whether to create a wall on the south side (negative Z) (default: true)
+  - `east`: (optional) Whether to create a wall on the east side (positive X) (default: true)
+  - `west`: (optional) Whether to create a wall on the west side (negative X) (default: true)
 
 ### 2. AutoAirWalls
 
@@ -52,6 +57,7 @@ A higher-level component that wraps meshes and automatically extracts their posi
 - `wallThickness`: (optional) Thickness of the air walls (default: 0.2)
 - `visible`: (optional) Whether to make the walls visible for debugging (default: false)
 - `wallColor`: (optional) Color of the walls when visible (default: "red")
+- `sides`: (optional) Configure which sides should have air walls (same as AirWalls component)
 
 ### 3. AirWallsWrapper
 
@@ -83,10 +89,28 @@ The most advanced component that can analyze complex hierarchies of objects, usi
 - `nameFilter`: (optional) Only generate air walls for meshes with names matching this filter
 - `margin`: (optional) Additional margin around edges (default: 0)
 - `enabled`: (optional) Enable/disable the air walls (default: true)
+- `sides`: (optional) Configure which sides should have air walls (same as AirWalls component)
 
 ## Usage Tips
 
 1. **For simple cases** where you know the exact dimensions of your platform, use `AirWalls` directly.
+
+2. **To create passages between adjacent platforms**, disable specific walls:
+```tsx
+// Example: Disable the east wall to allow passage to another platform on that side
+<AirWalls
+  position={[0, 0, 0]}
+  dimensions={[10, 1, 10]}
+  sides={{ east: false }}
+/>
+
+// Adjacent platform - disable west wall to match
+<AirWalls
+  position={[10, 0, 0]}
+  dimensions={[10, 1, 10]}
+  sides={{ west: false }}
+/>
+```
 
 2. **For single meshes** where the dimensions are defined in the geometry, use `AutoAirWalls` to automatically extract them.
 

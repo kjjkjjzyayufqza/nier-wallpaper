@@ -2,7 +2,7 @@ import React, { ReactElement, useRef, ReactNode, useMemo, useEffect, useState } 
 import { useThree, useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
-import { AirWalls } from './AirWalls';
+import { AirWalls, AirWallSides } from './AirWalls';
 
 interface AirWallsWrapperProps {
   /**
@@ -52,6 +52,16 @@ interface AirWallsWrapperProps {
    * @default true
    */
   enabled?: boolean;
+
+  /** 
+   * Optional configuration for which sides should have air walls (default: all sides)
+   * Configure which sides of the mesh should have air walls:
+   * - north: positive Z direction
+   * - south: negative Z direction
+   * - east: positive X direction
+   * - west: negative X direction
+   */
+  sides?: AirWallSides;
 }
 
 /**
@@ -67,6 +77,7 @@ export const AirWallsWrapper: React.FC<AirWallsWrapperProps> = ({
   nameFilter,
   margin = 0,
   enabled = true,
+  sides,
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [meshData, setMeshData] = useState<Array<{ position: [number, number, number], size: [number, number, number] }>>([]);
@@ -141,6 +152,7 @@ export const AirWallsWrapper: React.FC<AirWallsWrapperProps> = ({
         wallThickness={wallThickness}
         visible={visible}
         wallColor={wallColor}
+        sides={sides}
       />
     ));
   }, [meshData, wallHeight, wallThickness, visible, wallColor, enabled]);
