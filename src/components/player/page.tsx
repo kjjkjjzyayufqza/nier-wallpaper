@@ -29,7 +29,7 @@ const lerpAngle = (start: number, end: number, t: number) => {
 
 export const Player = () => {
     // console.log('Player')
-    const { scene } = useThree();
+    const { scene, camera } = useThree();
     const player = useRef<any>(null);
     const rb = useRef<RapierRigidBody>(null);
     const playerRotationTarget = useRef<any>(0);
@@ -146,24 +146,48 @@ export const Player = () => {
                 z: 0
             }
 
-            if (get().forward) movement.z = speed
-            if (get().backward) movement.z = -speed
-            if (get().left) movement.x = speed
-            if (get().right) movement.x = -speed
-
+            // Get camera direction - flatten to XZ plane and normalize
+            const cameraDirection = new THREE.Vector3();
+            camera.getWorldDirection(cameraDirection);
+            cameraDirection.y = 0;
+            cameraDirection.normalize();
+            
+            // Get right vector (perpendicular to camera direction)
+            const cameraRight = new THREE.Vector3(-cameraDirection.z, 0, cameraDirection.x);
+            
+            // Calculate movement directions based on camera orientation
+            let forward = new THREE.Vector3();
+            let right = new THREE.Vector3();
+            
+            if (get().forward) movement.z = speed;
+            if (get().backward) movement.z = -speed;
+            if (get().left) movement.x = speed;
+            if (get().right) movement.x = -speed;
+            
             if (movement.x !== 0) {
                 rotationTarget.current += 0.1 * movement.x;
             }
 
             if (movement.x !== 0 || movement.z !== 0) {
-                playerRotationTarget.current = Math.atan2(movement.x, movement.z);
-                vel.x = 1 * movement.x;
-                vel.z = 1 * movement.z;
-                isMoving.current = true
+                // Calculate movement vector relative to camera direction
+                forward.copy(cameraDirection).multiplyScalar(movement.z);
+                right.copy(cameraRight).multiplyScalar(-movement.x);
+                
+                // Combine movement vectors
+                const moveDirection = forward.add(right);
+                
+                // Set velocity
+                vel.x = moveDirection.x;
+                vel.z = moveDirection.z;
+                
+                // Update player rotation target to face movement direction
+                playerRotationTarget.current = Math.atan2(moveDirection.x, moveDirection.z);
+                
+                isMoving.current = true;
             } else {
                 vel.x = 0;
                 vel.z = 0;
-                isMoving.current = false
+                isMoving.current = false;
             }
 
             let rotationSpeed = 0.2

@@ -9,6 +9,7 @@ import { Bloom, DepthOfField, EffectComposer, Grid, Noise, SMAA, Vignette } from
 import SceneBackgroundEffects from './components/scene/sceneBackgroundEffects/page'
 import { NoToneMapping } from 'three'
 import { useState, useEffect } from 'react'
+import Scene2 from './components/scene/scene2/page'
 
 const keyboardMap = [
   { name: "forward", keys: ["KeyW"] },
@@ -63,7 +64,7 @@ function App() {
           <SceneBackgroundEffects />
           <Physics debug timeStep={"vary"}>
             {/* Scene 1 Content - Pass showAirWalls prop */}
-            <Scene1 showAirWalls={showAirWalls} />
+            <Scene2 showAirWalls={showAirWalls} />
 
             {/* Model with physics */}
             <Player />
