@@ -5,7 +5,7 @@ import './App.css'
 import { Perf } from 'r3f-perf'
 import { Player } from './components/player/page'
 import { default as Scene1 } from './components/scene/scene1/page'
-import { Bloom, DepthOfField, EffectComposer, Grid, Noise, SMAA, Vignette } from '@react-three/postprocessing'
+import { Bloom, DepthOfField, EffectComposer, FXAA, Grid, Noise, SMAA, Vignette } from '@react-three/postprocessing'
 import SceneBackgroundEffects from './components/scene/sceneBackgroundEffects/page'
 import { NoToneMapping } from 'three'
 import { useState, useEffect } from 'react'
@@ -41,6 +41,7 @@ function App() {
     <div style={{ width: '100%', height: '100vh' }}>
       <KeyboardControls map={keyboardMap}>
         <Canvas
+          shadows
           camera={{ position: [15, 15, Math.PI * -4], fov: 45, near: 0.1, far: 10000 }}
           gl={{
             toneMapping: NoToneMapping,
@@ -48,7 +49,7 @@ function App() {
           }}>
           <color attach="background" args={["#37342E"]} />
           <EffectComposer>
-            <SMAA />
+            <FXAA />
             <Bloom
               intensity={0.1} // The bloom intensity.
               blurPass={undefined} // A blur pass.
@@ -60,7 +61,17 @@ function App() {
           </EffectComposer>
           <OrbitControls />
           <Perf />
-          <ambientLight intensity={4.1} />
+          <ambientLight intensity={2.5} />
+          <directionalLight 
+            position={[10, 20, 5]} 
+            intensity={1.5} 
+            castShadow 
+            shadow-mapSize={[2048, 2048]}
+            shadow-camera-left={-20}
+            shadow-camera-right={20}
+            shadow-camera-top={20}
+            shadow-camera-bottom={-20}
+          />
           <SceneBackgroundEffects />
           <Physics debug timeStep={"vary"}>
             {/* Scene 1 Content - Pass showAirWalls prop */}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Html, useGLTF, useKeyboardControls } from '@react-three/drei';
-import { BallCollider, CollisionTarget, interactionGroups, quat, RapierRigidBody, RigidBody, vec3 } from '@react-three/rapier';
+import { BallCollider, CollisionTarget, ConeCollider, interactionGroups, quat, RapierRigidBody, RigidBody, RoundCuboidCollider, vec3 } from '@react-three/rapier';
 import * as THREE from 'three';
 import { base64GLB } from '../../player.glb';
 
@@ -326,8 +326,13 @@ export const Player = () => {
     })
 
     useEffect(() => {
-
-    }, [])
+        // 确保玩家模型内部的所有网格都可以投射阴影
+        playerModel.traverse((object) => {
+            if ((object as THREE.Mesh).isMesh) {
+                (object as THREE.Mesh).castShadow = true;
+            }
+        });
+    }, [playerModel])
 
     return (
         <>
@@ -341,14 +346,14 @@ export const Player = () => {
                 onCollisionEnter={({ manifold, target, other }) => {
                     onHit(target, other)
                 }}
-                position={[0, 10, 0]}
+                position={[0, 2, 0]}
             >
                 <group ref={player} position={[0, 0, 0]} name='player_rigidbody_group'>
-                    <primitive object={playerModel} scale={[20, 30, 20]} />
-                    <BallCollider
+                    <primitive object={playerModel} scale={[20, 30, 20]} castShadow />
+                    <RoundCuboidCollider
                         collisionGroups={interactionGroups(0, [100, 1, 2, 3])}
                         name="player_collider"
-                        args={[0.5]} // 动态调整球体碰撞体的半径
+                        args={[0.5, 0.1, 0.5, 0.1]} // 动态调整球体碰撞体的半径
                     />
                     <BallCollider
                         collisionGroups={interactionGroups(0, [1, 2, 3])}//不和墙壁碰撞

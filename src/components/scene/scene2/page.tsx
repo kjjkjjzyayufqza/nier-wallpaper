@@ -59,7 +59,7 @@ export default function Scene2({ showAirWalls = false }: Scene2Props) {
       >
         {/* Model A: Square base */}
         <RigidBody colliders="cuboid" type="fixed">
-          <mesh position={[0, -5, 0]}>
+          <mesh position={[0, -5, 0]} receiveShadow>
             <boxGeometry args={[20, 10, 20]} />
             <meshStandardMaterial color="#CBC6AF" />
           </mesh>
@@ -67,8 +67,14 @@ export default function Scene2({ showAirWalls = false }: Scene2Props) {
         
         {/* Model B: Narrow rectangular extension */}
         <RigidBody colliders="cuboid" type="fixed">
-          <mesh position={[0, -5, 15]}>
+          <mesh position={[0, -5, 15]} receiveShadow>
             <boxGeometry args={[10, 10, 10]} />
+            <meshStandardMaterial color="#ADB5BD" />
+          </mesh>
+        </RigidBody>
+        <RigidBody colliders="cuboid" type="fixed">
+          <mesh position={[0, 1, 0]} receiveShadow>
+            <boxGeometry args={[1, 1, 1]} />
             <meshStandardMaterial color="#ADB5BD" />
           </mesh>
         </RigidBody>

@@ -68,7 +68,7 @@ export const ConnectedAirWalls: React.FC<ConnectedAirWallsProps> = ({
         position={[centerX, centerY, centerZ]}
         rotation={[0, angle, 0]}
       >
-        <mesh>
+        <mesh castShadow={visible}>
           <boxGeometry args={[length, segmentHeight, wallThickness]} />
           <meshStandardMaterial 
             color={wallColor} 
