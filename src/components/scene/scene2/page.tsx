@@ -1,5 +1,6 @@
 import { RigidBody } from '@react-three/rapier'
 import { IrregularAirWalls } from '../../custom/IrregularAirWalls'
+import { NierBlockColor } from '../../../assets/config/color';
 
 interface Scene2Props {
   showAirWalls?: boolean;
@@ -7,16 +8,16 @@ interface Scene2Props {
 
 export default function Scene2({ showAirWalls = false }: Scene2Props) {
   // Define two models: a square (model A) and a narrow rectangle (model B) connected to it
-  
+
   // Model A is a square at position [0, 0, 0]
   // Model B is a narrow rectangle positioned at [0, 0, 15] (connected to the north side of A)
-  
+
   // Define the models configuration
   const models = [
     { id: 'modelA', topY: 0 },  // Square base at y=0
     { id: 'modelB', topY: 0 },  // Rectangle base at y=0
   ];
-  
+
   // Define the boundary points with perfect connections between models
   const borders = [
     // Model A perimeter (except for the north side which connects to Model B)
@@ -25,29 +26,29 @@ export default function Scene2({ showAirWalls = false }: Scene2Props) {
         // West side of model A (front-left corner to back-left corner)
         { modelId: 'modelA', point: [-10, -10] as [number, number] },
         { modelId: 'modelA', point: [-10, 10] as [number, number] },
-        
+
         // Connection point between Model A and Model B (left side)
         { modelId: 'modelA', point: [-5, 10] as [number, number] },
         { modelId: 'modelB', point: [-5, 10] as [number, number] },
-        
+
         // Front side of Model B
         { modelId: 'modelB', point: [-5, 20] as [number, number] },
         { modelId: 'modelB', point: [5, 20] as [number, number] },
-        
+
         // Connection point between Model B and Model A (right side)
         { modelId: 'modelB', point: [5, 10] as [number, number] },
         { modelId: 'modelA', point: [10, 10] as [number, number] },
-        
+
         // East side of model A (back-right corner to front-right corner)
         { modelId: 'modelA', point: [10, 10] as [number, number] },
         { modelId: 'modelA', point: [10, -10] as [number, number] },
-        
+
         // South side of model A (closing the loop)
         { modelId: 'modelA', point: [-10, -10] as [number, number] },
       ]
     }
   ];
-  
+
   return (
     <>
       <IrregularAirWalls
@@ -61,21 +62,21 @@ export default function Scene2({ showAirWalls = false }: Scene2Props) {
         <RigidBody colliders="cuboid" type="fixed">
           <mesh position={[0, -5, 0]} receiveShadow>
             <boxGeometry args={[20, 10, 20]} />
-            <meshStandardMaterial color="#CBC6AF" />
+            <meshStandardMaterial color={NierBlockColor} />
           </mesh>
         </RigidBody>
-        
+
         {/* Model B: Narrow rectangular extension */}
         <RigidBody colliders="cuboid" type="fixed">
           <mesh position={[0, -5, 15]} receiveShadow>
             <boxGeometry args={[10, 10, 10]} />
-            <meshStandardMaterial color="#ADB5BD" />
+            <meshStandardMaterial color={NierBlockColor} />
           </mesh>
         </RigidBody>
         <RigidBody colliders="cuboid" type="fixed">
-          <mesh position={[0, 1, 0]} receiveShadow>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color="#ADB5BD" />
+          <mesh position={[0, -5, 35]} receiveShadow>
+            <boxGeometry args={[15, 10, 30]} />
+            <meshStandardMaterial color={NierBlockColor} />
           </mesh>
         </RigidBody>
       </IrregularAirWalls>

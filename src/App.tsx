@@ -5,11 +5,12 @@ import './App.css'
 import { Perf } from 'r3f-perf'
 import { Player } from './components/player/page'
 import { default as Scene1 } from './components/scene/scene1/page'
-import { Bloom, DepthOfField, EffectComposer, FXAA, Grid, Noise, SMAA, Vignette } from '@react-three/postprocessing'
+import { Autofocus, Bloom, BrightnessContrast, DepthOfField, DotScreen, EffectComposer, FXAA, Grid, Noise, SMAA, Vignette } from '@react-three/postprocessing'
 import SceneBackgroundEffects from './components/scene/sceneBackgroundEffects/page'
 import { NoToneMapping } from 'three'
 import { useState, useEffect } from 'react'
 import Scene2 from './components/scene/scene2/page'
+import { BlendFunction } from 'postprocessing'
 
 const keyboardMap = [
   { name: "forward", keys: ["KeyW"] },
@@ -42,7 +43,7 @@ function App() {
       <KeyboardControls map={keyboardMap}>
         <Canvas
           shadows
-          camera={{ position: [15, 15, Math.PI * -4], fov: 45, near: 0.1, far: 10000 }}
+          camera={{ position: [15, 9, Math.PI * -4], fov: 45, near: 0.1, far: 10000 }}
           gl={{
             toneMapping: NoToneMapping,
             powerPreference: "high-performance",
@@ -62,10 +63,10 @@ function App() {
           <OrbitControls />
           <Perf />
           <ambientLight intensity={2.5} />
-          <directionalLight 
-            position={[10, 20, 5]} 
-            intensity={1.5} 
-            castShadow 
+          <directionalLight
+            position={[10, 20, 5]}
+            intensity={1.5}
+            castShadow
             shadow-mapSize={[2048, 2048]}
             shadow-camera-left={-20}
             shadow-camera-right={20}

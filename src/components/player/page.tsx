@@ -340,6 +340,7 @@ export const Player = () => {
                 name='player_rigidbody'
                 lockRotations
                 ref={rb}
+                gravityScale={3}
                 collisionGroups={interactionGroups(0, [100, 1, 2, 3])}
                 colliders={false}
                 userData={{ type: 'player' }}
